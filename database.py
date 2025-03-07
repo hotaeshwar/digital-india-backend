@@ -9,10 +9,11 @@ class DatabaseConnection:
             cls._instance._initialized = False
         return cls._instance
 
-    def __init__(self, mongo_uri: str = None, db_name: str = "contact_db"):
+    def __init__(self, mongo_uri: str = None, db_name: str = "admin"):
         if not self._initialized:
             self._initialized = True
-            self.mongo_uri = mongo_uri or "mongodb://localhost:27017/"
+            # Using the DigitalOcean MongoDB connection string instead of localhost
+            self.mongo_uri = mongo_uri or "mongodb+srv://doadmin:t460JQE13wbMl985@db-mongodb-blr1-70752-7f07ae90.mongo.ondigitalocean.com/admin?tls=true&authSource=admin"
             self.client = AsyncIOMotorClient(self.mongo_uri)
             self.db = self.client[db_name]
             self.contact_collection = self.db['contact_submissions']
@@ -37,4 +38,4 @@ class DatabaseConnection:
 
 # Initialize connection and expose collection
 database = DatabaseConnection()
-contact_collection = database.contact_collection  # Add this line
+contact_collection = database.contact_collection
