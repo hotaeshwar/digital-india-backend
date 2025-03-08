@@ -1,14 +1,24 @@
-# main.py
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
+from contextlib import asynccontextmanager
 
 from database import database
 from auth import router as contact_router
 
+# Define lifespan for startup and shutdown tasks
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Code to run on startup
+    await database.connect()
+    yield
+    # Code to run on shutdown
+    await database.close()
+
 app = FastAPI(
     title="Building India Digital Backend",
-    description="Backend for contact form submissions"
+    description="Backend for contact form submissions",
+    lifespan=lifespan
 )
 
 # Specific CORS configuration for Vite React frontend
@@ -37,16 +47,6 @@ app.add_middleware(
 
 # Include routers
 app.include_router(contact_router, prefix="/api/contact", tags=["Contact"])
-
-@app.on_event("startup")
-async def startup_event():
-    # Connect to database on startup
-    await database.connect()
-
-@app.on_event("shutdown")
-async def shutdown_event():
-    # Close database connection on shutdown
-    await database.close()
 
 # Health check endpoint
 @app.get("/health")
