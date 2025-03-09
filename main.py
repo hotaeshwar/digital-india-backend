@@ -26,8 +26,7 @@ origins = [
     "http://localhost:5173",
     "https://localhost:5173",
     # Add any additional development or production domains
-    "http://localhost:3001",
-    # Another common React dev server
+    "http://localhost:3001",  # Another common React dev server
     "http://127.0.0.1:5173",
     # Production domains (replace with your actual domain)
     "http://165.22.215.157",
@@ -37,14 +36,10 @@ origins = [
 # Comprehensive CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
-    # Explicitly defined allowed origins
-    allow_credentials=True,
-    # Allow credentials (cookies, authorization headers)
-    allow_methods=["*"],
-    # Allow all HTTP methods
-    allow_headers=["*"],
-    # Allow all headers
+    allow_origins=origins,  # Explicitly defined allowed origins
+    allow_credentials=True,  # Allow credentials (cookies, authorization headers)
+    allow_methods=["*"],  # Allow all HTTP methods
+    allow_headers=["*"],  # Allow all headers
 )
 
 # Include routers
